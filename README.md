@@ -9,7 +9,7 @@ package, which does the majority of the work.
 Install the plugin via NPM:
 
 ``` bash
-npm i --save-dev directorys-tree-webpack-plugin
+npm i --save-dev directorys-trees-webpack-plugin
 ```
 
 ## Usage
@@ -37,7 +37,7 @@ __webpack.config.js__
 
 ``` js
 const Path = require('path')
-const DirectoryTreePlugin = require('directorys-tree-webpack-plugin')
+const DirectoryTreePlugin = require('directorys-trees-webpack-plugin')
 
 module.exports = {
   entry: './src/index.js',
