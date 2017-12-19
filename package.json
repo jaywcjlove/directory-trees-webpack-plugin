@@ -1,0 +1,29 @@
+{
+  "name": "directory-trees-webpack-plugin",
+  "version": "1.0.0",
+  "description": "Store a JSON mapping of a directory.",
+  "main": "src/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jaywcjlove/directory-trees-webpack-plugin.git"
+  },
+  "keywords": [
+    "webpack",
+    "plugin",
+    "directory-tree",
+    "directory",
+    "structure"
+  ],
+  "author": "kenny wang",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jaywcjlove/directory-trees-webpack-plugin/issues"
+  },
+  "homepage": "https://github.com/jaywcjlove/directory-trees-webpack-plugin#readme",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
+  "dependencies": {
+    "directory-tree": "^2.0.0"
+  }
+}
