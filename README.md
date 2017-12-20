@@ -3,7 +3,7 @@
 > A variation of [directory-tree-webpack-plugin](https://github.com/skipjack/directory-tree-webpack-plugin)
 
 This plugin allows you to generate a JSON representation of a directory and all
-its child nodes (files and folders). It uses the fantastic [directory-tree][1]
+its child nodes (files and folders). It uses the fantastic [directory-tree-md][1]
 package, which does the majority of the work.
 
 Install the plugin via NPM:
@@ -46,6 +46,7 @@ module.exports = {
       dir: './src/content',
       // dir: ['./src/content','./src/content2'],
       path: './src/_content.json',
+      mdconf: true, // Whether to return Markdown configuration.
       extensions: /\.md/
     })
   ],
@@ -124,5 +125,5 @@ __MUST__ be deterministic, if it isn't an infinite loop of tree generation will
 occur.
 
 
-[1]: https://github.com/mihneadb/node-directory-tree
+[1]: https://github.com/uiw-react/node-directory-tree-md
 [2]: https://webpack.js.org/api/module-methods/#import-
