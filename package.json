@@ -1,6 +1,6 @@
 {
   "name": "directory-trees-webpack-plugin",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Store a JSON mapping of a directory.",
   "main": "src/index.js",
   "repository": {
@@ -24,6 +24,6 @@
     "registry": "https://registry.npmjs.org/"
   },
   "dependencies": {
-    "directory-tree-md": "^2.0.3"
+    "directory-tree-md": "^2.0.4"
   }
 }
