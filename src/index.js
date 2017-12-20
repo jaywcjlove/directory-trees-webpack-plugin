@@ -1,6 +1,6 @@
 // Import External Dependencies
 const FS = require('fs')
-const DirectoryTree = require('directory-tree')
+const DirectoryTree = require('directory-tree-md')
 
 /**
  * Generate a json tree representing a directory
