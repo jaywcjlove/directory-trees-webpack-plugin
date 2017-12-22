@@ -46,6 +46,7 @@ module.exports = {
       dir: './src/content',
       // dir: ['./src/content','./src/content2'],
       path: './src/_content.json',
+      watch: './src/watch.js', // webpack for watching
       mdconf: true, // Whether to return Markdown configuration.
       extensions: /\.md/
     })

@@ -1,23 +1,22 @@
 // Import External Dependencies
-const FS = require('fs')
-const DirectoryTree = require('directory-tree-md')
+const FS = require('fs');
+const DirectoryTree = require('directory-tree-md');
 
 /**
  * Generate a json tree representing a directory
- * 
+ *
  * @type  {class}
  * @param {object} options - ...
  */
 module.exports = class DirectoryTreePlugin {
     constructor(options) {
-        let { dir, path, enhance } = options
-
-        this._options = { dir, path, enhance }
+        let { dir, path, enhance, watch } = options
+        this._options = { dir, path, enhance, watch }
 
         delete options.dir
         delete options.path
         delete options.enhance
-
+        delete options.watch
         this._treeOptions = options
     }
 
@@ -27,10 +26,10 @@ module.exports = class DirectoryTreePlugin {
 
     /**
      * Construct the tree and write out a JSON file
-     * 
+     *
      */
     _buildTree() {
-        let { dir, path, enhance } = this._options;
+        let { dir, path, enhance, watch } = this._options;
         let tree = null;
         if (Array.isArray(dir)) {
             tree = dir.map((path) => {
@@ -49,13 +48,34 @@ module.exports = class DirectoryTreePlugin {
                 if (error) {
                     console.error('\r\n\r\nFailure building directory tree: ', error, '\r\n\r\n')
                 }
+                if (watch && typeof watch === 'string') {
+                    let contentArray = this._watchFileContent(Array.isArray(modified) ? modified : [modified])
+                    contentArray.push('module.exports = null;')
+                    contentArray = contentArray.join('');
+                    FS.writeFile(watch, contentArray, error => {
+                        if (error) {
+                            console.error('\r\n\r\nFailure building directory tree: ', error, '\r\n\r\n')
+                        }
+                    })
+                }
             })
         }
+
+    }
+    _watchFileContent(treeDates, newDates = []) {
+        treeDates.forEach((item) => {
+            if (item.type === 'directory' && item.children && item.children.length > 0) {
+                this._watchFileContent(item.children, newDates)
+            } else if (item.type === 'file') {
+                newDates.push('require("' + item.path + '");\n');
+            }
+        })
+        return newDates
     }
 
     /**
      * Enhance the given `item` and recursively enhance children
-     * 
+     *
      * @param  {object} item - The structure to enhance
      * @return {object}      - An enhanced `tree` structure
      */
