@@ -96,6 +96,8 @@ The following options can be passed to the plugin:
 
 - `dir` (string/string[]): A path to the directory that should be mapped.
 - `path` (string): The path to and filename of the JSON file to create.
+- `watch` (string): The path to and filename of the js file to create, Used for webpack monitoring file changes.
+- `mdconf` (string): Whether to return Markdown configuration..
 - `enhance` (func): A function to execute on every item in the tree (see below).
 
 All the remaining options are passed to the `directory-tree` package. See that
