@@ -24,6 +24,6 @@
     "registry": "https://registry.npmjs.org/"
   },
   "dependencies": {
-    "directory-tree-md": "^2.0.4"
+    "directory-tree-md": "^2.0.5"
   }
 }
