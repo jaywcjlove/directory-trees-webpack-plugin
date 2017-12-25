@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jaywcjlove/directory-trees-webpack-plugin.git"
+    "url": "git+https://github.com/react-doc/directory-trees-webpack-plugin.git"
   },
   "keywords": [
     "webpack",
@@ -17,9 +17,9 @@
   "author": "kenny wang",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/jaywcjlove/directory-trees-webpack-plugin/issues"
+    "url": "https://github.com/react-doc/directory-trees-webpack-plugin/issues"
   },
-  "homepage": "https://github.com/jaywcjlove/directory-trees-webpack-plugin#readme",
+  "homepage": "https://github.com/react-doc/directory-trees-webpack-plugin#readme",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },
