@@ -1,7 +1,6 @@
 // Import External Dependencies
 const FS = require('fs');
 const PATH = require('path');
-const async = require('async');
 const DirectoryTree = require('directory-tree-md');
 const mkdirp = require('mkdirp');
 
