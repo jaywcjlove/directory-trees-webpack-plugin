@@ -36,7 +36,7 @@ demo
 __webpack.config.js__
 
 ``` js
-const Path = require('path')
+const PATH = require('path')
 const DirectoryTreePlugin = require('directory-trees-webpack-plugin')
 
 module.exports = {
@@ -46,7 +46,12 @@ module.exports = {
       dir: './src/content',
       // dir: ['./src/content','./src/content2'],
       path: './src/_content.json',
-      watch: './src/watch.js', // webpack for watching
+      // watch: true,
+      watch: {
+        dir: PATH.join('./src/.catch', './md'), // Save to the specified directory
+        filename: 'underline', // "underline | dir"
+        sep: '___', // Named directory path, using ___ interval
+      },
       mdconf: true, // Whether to return Markdown configuration.
       extensions: /\.md/
     })
@@ -63,7 +68,7 @@ module.exports = {
     ]
   },
   output: {
-    path: Path.resolve(__dirname, 'dist'),
+    path: PATH.resolve(__dirname, 'dist'),
     filename: 'bundle.js'
   }
 }
@@ -96,7 +101,10 @@ The following options can be passed to the plugin:
 
 - `dir` (string/string[]): A path to the directory that should be mapped.
 - `path` (string): The path to and filename of the JSON file to create.
-- `watch` (string): The path to and filename of the js file to create, Used for webpack monitoring file changes.
+- `watch` (boolean/object): The path to and filename of the js file to create, Used for webpack monitoring file changes.
+  - `dir` Copy to the '/path/md' directory.
+  - `filename` "underline | dir"
+  - `sep` filename="underline", File name to the directory, using '___' interval, default value '__'.
 - `mdconf` (string): Whether to return Markdown configuration..
 - `enhance` (func): A function to execute on every item in the tree (see below).
 
