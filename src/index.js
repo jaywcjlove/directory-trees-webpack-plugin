@@ -17,7 +17,7 @@ module.exports = class DirectoryTreePlugin {
         this._treeOptions = { ...otherProps };
         this.watchFiles = [];
     }
-    saveFileToDir(filePathItem, callback) {
+    saveFileToDir(filePathItem) {
         let { dir, filename, sep = "dir" } = this._options.watch;
         let writePath = PATH.resolve(process.cwd(), dir);
         if (filename && filename === 'underline') {
@@ -27,7 +27,7 @@ module.exports = class DirectoryTreePlugin {
             writePath = PATH.join(writePath, filePathItem.replace(process.cwd() + PATH.sep, ''));
         }
         if (!FS.existsSync(filePathItem)) {
-            return callback();
+            return;
         }
         let content = FS.readFileSync(filePathItem);
 
@@ -35,9 +35,8 @@ module.exports = class DirectoryTreePlugin {
         if (FS.existsSync(writePath)) {
             contentOld = FS.readFileSync(writePath);
         }
-        if (contentOld && content.toString() === contentOld.toString()) return callback();
+        if (contentOld && content.toString() === contentOld.toString()) return;
         write.sync(writePath, content);
-        callback();
     }
     writeFileSync() {
         const { dir, path, enhance, watch } = this._options;
@@ -58,23 +57,28 @@ module.exports = class DirectoryTreePlugin {
         if (!contentOld || treeContent.toString() !== contentOld.toString()) {
             write.sync(path, treeContent);
         }
+
+        if (watch && FS.existsSync(path)) {
+            let treeList = FS.readFileSync(path) || [];
+            if (treeList) treeList = JSON.parse(treeList.toString());
+            treeList = this.getAllWatchPath(treeList);
+            // console.log('treeList:', treeList)
+            treeList.forEach((filePathItem) => {
+                this.saveFileToDir(filePathItem)
+            })
+        }
     }
-    watchMarkdownFile(compilation, callback) {
+    watchMarkdownFile(compilation) {
         const { dir, path, watch } = this._options;
         if (watch) {
-            let content = [];
             if (FS.existsSync(path)) {
-                content = FS.readFileSync(path);
+                let content = FS.readFileSync(path) || [];
                 if (content) content = JSON.parse(content.toString());
-                let fileDependencies = this._getAllWatchPath(content);
-                // console.log('fileDependencies:', compilation.fileDependencies)
+                let fileDependencies = this.getAllWatchPath(content);
                 fileDependencies.forEach((filePathItem) => {
                     if (compilation.fileDependencies.some(file => file.indexOf(filePathItem) === -1)) {
                         // ...tell webpack to watch file recursively until they appear.
                         compilation.fileDependencies.push(filePathItem);
-                        if (dir) {
-                            this.saveFileToDir(filePathItem, callback);
-                        }
                     }
                 })
             }
@@ -83,20 +87,17 @@ module.exports = class DirectoryTreePlugin {
     apply(compiler) {
         compiler.plugin('emit', (compilation, done) => {
             this.writeFileSync();
-            this.watchMarkdownFile(compilation, done)
+            this.watchMarkdownFile(compilation)
             done()
         })
-        compiler.plugin('after-resolvers', (compilation, callback) => {
-            this.writeFileSync();
-        })
     }
-    _getAllWatchPath(arr, pathArr = []) {
+    getAllWatchPath(arr, pathArr = []) {
         arr.forEach((item) => {
             if (item.type === 'file') {
                 pathArr.push(item.path)
             }
             if (item.children && item.children.length > 0) {
-                pathArr.concat(this._getAllWatchPath(item.children, pathArr));
+                pathArr.concat(this.getAllWatchPath(item.children, pathArr));
             }
         })
         return pathArr;
